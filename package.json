@@ -1,0 +1,9 @@
+{
+  "name": "boleto-promise-parser",
+  "version": "1.0.0",
+  "description": "Parser para leitura de boletos bancarios e guias de concessionarias",
+  "main": "index.js",
+  "repository": "https://github.com/girvX/boleto-promise-parser",
+  "author": "Giovani Rodrigues",
+  "license": "MIT"
+}

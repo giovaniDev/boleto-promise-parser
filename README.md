@@ -1,0 +1,1 @@
+Promise para fazer o parser dos dados do código de barras que vem do scanner, de acordo com as normas da FEBRABAN!
