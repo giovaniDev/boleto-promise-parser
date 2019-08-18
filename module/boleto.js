@@ -75,14 +75,14 @@ const boletoParser = (barCodeLine) => {
         
         const multiplyedPosition = multiplyPositionsModule10Boleto(arrayFields); // Multiplying the array barcode fields
         const separatedDigitos = separatingPositionsModule10(multiplyedPosition);
-        const digDAC = getDigitoVerificadorModule10(separatedDigitos);
+        const digits = getDigitoVerificadorModule10(separatedDigitos);
 
-        const result = `${field1.join('')}${digDAC[0]}${field2.join('')}${digDAC[1]}${field3.join('')}${digDAC[2]}${field4.join('')}${field5.join('')}`;
+        const codebar = `${field1.join('')}${digDAC[0]}${field2.join('')}${digDAC[1]}${field3.join('')}${digDAC[2]}${field4.join('')}${field5.join('')}`;
         const vencimento = getVencimento(result.slice(33,37));
         
         resolve({data: {
-            codebar: result,
-            digits: digDAC,
+            codebar,
+            digits,
             value: String(parseFloat(result.slice(37, 47) / 100)).replace('.', ','),
             vencimento
         }});
