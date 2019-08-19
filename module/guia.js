@@ -1,3 +1,5 @@
+const segments = require('./segments');
+
 function separatingPositionsModule10(inputMultiplyedPositions) {
     const separetedDigitos = inputMultiplyedPositions.map(fields => {
         const joinFields = fields.join('');
@@ -81,10 +83,11 @@ const guiaParser = (barCodeLine) => {
         
         resolve({
             data: {
-            codebar: result,
-            digits: digDAC,
-            value: String(parseFloat(barCodeLine.slice(04, 15) / 100)).replace('.', ','),
-        }});
+                segments,
+                codebar: result,
+                digits: digDAC,
+                value: String(parseFloat(barCodeLine.slice(04, 15) / 100)).replace('.', ','),
+            }});
     })
 
 }
