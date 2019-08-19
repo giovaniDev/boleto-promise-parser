@@ -33,40 +33,7 @@ function getDigitoVerificadorModule10(inputSeparetedDigitos) {
     }, 0))
 }
 
-function verifyDigitoVerificadorGeralModule10Guia(inputBarcode) {
-    let factor = 2;
-    const multiplyFactor = inputBarcode.map((values, index) => {
-        if (index === 3) return 0;
-        if (factor === 2) {
-            const res = values * factor;
-            factor = 1;
-            return res
-        } else {
-            const res = values * factor;
-            factor = 2;
-            return res
-        }
-    })
-    const splitValues = multiplyFactor.join('').split('');
-    const res = splitValues.reduce((acum, value) => {
-        const res = acum + (10 - Number(value));
-        return res % 10 ;
-    }, 0);
-
-    if (Number(inputBarcode[3]) !== res) {
-        return false
-    }
-    return true;
-}
-
 const guiaParser = (barCodeLine) => {
-    return new Promise((resolve, reject) => {
-        
-        if (barCodeLine.length !== 44) reject({ error: 'São necessárias 44 caracteres' });
-
-        const verifyinDigitoVerificador = verifyDigitoVerificadorGeralModule10Guia(barCodeLine.split(''));
-        
-        if (!verifyinDigitoVerificador) reject({ error: 'Digito verificador geral inválido! Passe o scanner novamente' }) ;
 
         const field1 = barCodeLine.slice(0,11).split("");
         const field2 = barCodeLine.slice(11,22).split("");
@@ -81,15 +48,13 @@ const guiaParser = (barCodeLine) => {
 
         const result = `${field1.join('')}${digDAC[0]}${field2.join('')}${digDAC[1]}${field3.join('')}${digDAC[2]}${field4.join('')}`;
         
-        resolve({
+        return {
             data: {
                 segments: segments[barCodeLine[1] - 1],
                 codebar: result,
                 digits: digDAC,
                 value: String(parseFloat(barCodeLine.slice(04, 15) / 100)).replace('.', ','),
-            }});
-    })
-
+            }};
 }
     
 module.exports = guiaParser;

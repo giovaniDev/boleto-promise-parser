@@ -28,24 +28,6 @@ function getDigitoVerificadorModule10(inputSeparetedDigitos) {
     }, 0))
 }
 
-function verifyDigitoVerificadorGeralModule11Boleto(inputBarcode) {
-    let module11 = 4;
-    const multiplyValuesModule11 =  inputBarcode.map((values, index) => {
-        if (index === 4) return 0;
-        const res = values * module11;
-        module11 -= 1;
-        if (module11 === 1) module11 = 9;
-        return res;
-    });
-    const sumValues = multiplyValuesModule11.reduce((acum, values) => {
-        return acum + values;
-    }, 0)
-    let restResult = sumValues % 11;
-    const finalResult = restResult === 0 || restResult === 1 ? 0 : 11 - restResult;
-    if (Number(inputBarcode[4]) !== finalResult) return false;
-    return true;
-}
-
 function getVencimento(codeBarData) {
         const dateBoleto = new Date;
         dateBoleto.setFullYear(1997);
@@ -57,13 +39,6 @@ function getVencimento(codeBarData) {
 
 
 const boletoParser = (barCodeLine) => {
-    return new Promise((resolve, reject) => {
-        
-        if (barCodeLine.length !== 44) reject({error: 'São necessárias 44 caracteres'});
-
-        const verifyinDigitoVerificador = verifyDigitoVerificadorGeralModule11Boleto(barCodeLine.split(''));
-
-        if (!verifyinDigitoVerificador) reject({error: 'Digito verificador geral inválido! Passe o scanner novamente'});
 
         const field1 = (barCodeLine.slice(0,4).split("").concat(barCodeLine.slice(19,24).split(""))); 
         const field2 = barCodeLine.slice(24,34).split("");
@@ -77,16 +52,15 @@ const boletoParser = (barCodeLine) => {
         const separatedDigitos = separatingPositionsModule10(multiplyedPosition);
         const digits = getDigitoVerificadorModule10(separatedDigitos);
 
-        const codebar = `${field1.join('')}${digDAC[0]}${field2.join('')}${digDAC[1]}${field3.join('')}${digDAC[2]}${field4.join('')}${field5.join('')}`;
-        const vencimento = getVencimento(result.slice(33,37));
+        const codebar = `${field1.join('')}${digits[0]}${field2.join('')}${digits[1]}${field3.join('')}${digits[2]}${field4.join('')}${field5.join('')}`;
+        const vencimento = getVencimento(codebar.slice(33,37));
         
-        resolve({data: {
+        return {data: {
             codebar,
             digits,
-            value: String(parseFloat(result.slice(37, 47) / 100)).replace('.', ','),
+            value: String(parseFloat(codebar.slice(37, 47) / 100)).replace('.', ','),
             vencimento
-        }});
-    });
+        }};
 }
     
 module.exports = boletoParser;
