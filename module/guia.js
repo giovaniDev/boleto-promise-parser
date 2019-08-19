@@ -83,7 +83,7 @@ const guiaParser = (barCodeLine) => {
         
         resolve({
             data: {
-                segments,
+                segments: segment[barCodeLine[1] - 1],
                 codebar: result,
                 digits: digDAC,
                 value: String(parseFloat(barCodeLine.slice(04, 15) / 100)).replace('.', ','),
