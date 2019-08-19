@@ -12,3 +12,6 @@ ou:
 ```
 yarn add boleto-promise-parser
 ```
+
+v1.0.3:
+Agora é retornado um novo campo: o segmento das guias, ex: Telecomunicaçoes, Saneamento, etc...
