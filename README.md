@@ -15,5 +15,6 @@ yarn add boleto-promise-parser
 
 v1.0.4:
 Verificaçao de digito verificador geral aperfeiçoado! Agora a verifaçao é feita em duas etapas (modulo 10 e modulo 11).
+
 v1.0.3:
 Agora é retornado um novo campo: o segmento das guias, ex: Telecomunicaçoes, Saneamento, etc...
